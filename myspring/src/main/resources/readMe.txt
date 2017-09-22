@@ -19,6 +19,15 @@ ehcache
 qurtz
 activiti
 
+export excel
+import excel
+save pdf
+show report
+
+upload
+download
+show picture
+
 message
 websocket
 
