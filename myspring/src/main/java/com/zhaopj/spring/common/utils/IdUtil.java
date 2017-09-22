@@ -7,7 +7,7 @@ import java.util.UUID;
 /**
  * ID工具类
  * 	1.随机生成uuid不带分隔符
- * 	2.随机生成取uuid带分隔符
+ * 	2.随机生成uuid带分隔符
  * 	3.随机生成Long
  */
 public class IdUtil implements Serializable {
