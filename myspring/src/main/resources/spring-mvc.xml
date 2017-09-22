@@ -7,15 +7,30 @@
 		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.1.xsd">
 
 	<description>Spring MVC Configuration</description>
-
 	<!-- 使用Annotation自动注册Bean,base-package 如果多个，用“,”分隔 -->
 	<context:component-scan base-package="com.zhaopj.spring" />
-
-	<!-- 视图解析 -->
-	<bean id="viewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver">
-		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />
+	<!-- 视图(jsp)解析 -->
+	<bean id="viewResolver"
+		class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+		<property name="viewClass"
+			value="org.springframework.web.servlet.view.JstlView" />
 		<property name="prefix" value="/WEB-INF/views/" />
 		<property name="suffix" value=".jsp" />
+	</bean>
+	<!-- json 配置 -->
+	<mvc:annotation-driven>
+		<mvc:message-converters>
+			<bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+				<property name="objectMapper" ref="objectMapper" />
+			</bean>
+		</mvc:message-converters>
+	</mvc:annotation-driven>
+	<!-- json 格式化 -->
+	<bean id="objectMapper" class="org.springframework.http.converter.json.Jackson2ObjectMapperFactoryBean">
+		<!-- 格式：缩进输出 -->
+		<property name="indentOutput" value="true"/>
+		<!-- 时间格式化[yyyy-MM-dd hh:mm:ss] -->
+		<property name="simpleDateFormat" value="yyyy-MM-dd"/>
 	</bean>
 
 </beans>
