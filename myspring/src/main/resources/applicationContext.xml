@@ -1,23 +1,62 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-	xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:jdbc="http://www.springframework.org/schema/jdbc" 
-	xmlns:jee="http://www.springframework.org/schema/jee"
-	xmlns:tx="http://www.springframework.org/schema/tx" 
-	xmlns:util="http://www.springframework.org/schema/util"
-	xmlns:task="http://www.springframework.org/schema/task"
-	xsi:schemaLocation="
-		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
-		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd
-		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.1.xsd
-		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.1.xsd
-		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.1.xsd
-		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.1.xsd
-		http://www.springframework.org/schema/task
-		http://www.springframework.org/schema/task/spring-task-4.1.xsd"
-	default-lazy-init="true">
-	
-	
-	
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans  
+                         http://www.springframework.org/schema/beans/spring-beans-4.0.xsd  
+                         http://www.springframework.org/schema/context  
+                         http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+
+	<!-- spring官网 -->
+	<!-- https://docs.spring.io/spring/docs/current/spring-framework-reference/htmlsingle/ -->
+	<!-- mybatis官网 -->
+	<!-- http://www.mybatis.org/mybatis-3/zh/index.html -->
+	<!-- mybatis-spring官网 -->
+	<!-- http://www.mybatis.org/spring/zh/index.html -->
+	<!-- 阿里连接池druid官网 -->
+	<!-- https://github.com/alibaba/druid -->
+	<!-- mybatis-generator官网(提供自动生成DAO Entity mapper.xml) -->
+	<!-- http://www.mybatis.org/generator/ -->
+
+	<context:annotation-config />
+	<!-- 配置component所在的包，自动加载需要管理的Bean -->
+	<context:component-scan base-package="com.zhaopj.spring" />
+	<!-- 加载配置属性文件 -->
+	<context:property-placeholder
+		ignore-unresolvable="true" location="classpath:db-config.properties" />
+	<!-- 阿里 druid 数据库连接池 -->
+	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
+		init-method="init" destroy-method="close">
+		<property name="url" value="${jdbc.url}" />
+		<property name="username" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+		<property name="filters" value="stat" />
+		<property name="maxActive" value="20" />
+		<property name="initialSize" value="1" />
+		<property name="maxWait" value="60000" />
+		<property name="minIdle" value="1" />
+		<property name="timeBetweenEvictionRunsMillis" value="60000" />
+		<property name="minEvictableIdleTimeMillis" value="300000" />
+		<property name="testWhileIdle" value="true" />
+		<property name="testOnBorrow" value="false" />
+		<property name="testOnReturn" value="false" />
+		<property name="poolPreparedStatements" value="true" />
+		<property name="maxOpenPreparedStatements" value="20" />
+	</bean>
+	<!-- 配置sqlSessionFactory -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="mapperLocations" value="classpath:mappers/**/*.xml" />
+		<property name="configLocation" value="classpath:spring-mybatis.xml" />
+	</bean>
+	<!-- 注入映射器 -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.zhaopj.spring.dao" />
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
+	</bean>
+	<!-- 配置事务管理器 -->
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+
 </beans>

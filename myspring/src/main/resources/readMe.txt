@@ -13,6 +13,9 @@ log4j
 
 hibernate
 mybatis
+double datasource
+
+page
 
 shiro
 ehcache

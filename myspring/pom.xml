@@ -12,6 +12,10 @@
 		<jstl.version>1.2</jstl.version>
 		<commons-lang3.version>3.4</commons-lang3.version>
 		<jackson.version>2.8.1</jackson.version>
+		<mysql.version>5.1.38</mysql.version>
+		<druid.version>1.0.29</druid.version>
+		<mybatis.version>3.4.1</mybatis.version>
+		<mybatis-spring.version>1.3.0</mybatis-spring.version>
 	</properties>
 	<!-- spring-framework-bom配置(解决管理版本冲突的难题) -->
 	<dependencyManagement>
@@ -19,17 +23,27 @@
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-framework-bom</artifactId>
-				<version>4.3.11.RELEASE</version>
+				<version>4.3.9.RELEASE</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
 	<dependencies>
-		<!-- spring MVC -->
+		<!-- spring、springMVC配置 -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
+		</dependency>
+		<!-- spring jdbc -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+		</dependency>
+		<!-- spring事物控制 -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-tx</artifactId>
 		</dependency>
 		<!-- 单元测试 -->
 		<dependency>
@@ -52,12 +66,47 @@
 		</dependency>
 		<!-- jackson json处理 -->
 		<dependency>
-		    <groupId>com.fasterxml.jackson.core</groupId>
-		    <artifactId>jackson-databind</artifactId>
-		    <version>${jackson.version}</version>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>${jackson.version}</version>
 		</dependency>
+		<!-- database : mysql -->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>${mysql.version}</version>
+		</dependency>
+		<!-- connection pool : alibaba druid -->
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>druid</artifactId>
+			<version>${druid.version}</version>
+		</dependency>
+		<!-- mybatis 配置 -->
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis</artifactId>
+			<version>${mybatis.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis-spring</artifactId>
+			<version>${mybatis-spring.version}</version>
+		</dependency>
+
+
+		
+
+
 	</dependencies>
 	<build>
 		<finalName>myspring</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.mybatis.generator</groupId>
+				<artifactId>mybatis-generator-maven-plugin</artifactId>
+				<version>1.3.5</version>
+			</plugin>
+		</plugins>
 	</build>
 </project>
