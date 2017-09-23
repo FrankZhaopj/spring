@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,25 +37,41 @@ public class TestController {
 		return map;
 	}
 	
+	@RequestMapping("get")
+	@ResponseBody
+	public Mytest get(HttpServletRequest request) {
+		String id = request.getParameter("id");
+		System.out.println(id);
+		Mytest mytest = mytestMapper.selectByPrimaryKey(id);
+		return mytest;
+	}
+	
 	@RequestMapping("/post")
 	@ResponseBody
 	public Map<String, Object> post() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		Mytest mytest = new Mytest();
-		mytest.setId("3");
-		mytest.setName("zhaopj");
-		mytest.setAge(30);
-		mytest.setBirthday(new Date());
-		map.put("mytest", mytest);
-		int s = mytestMapper.insert(mytest);
+		Mytest mytest;
+		for(int i = 1; i<=5; i++) {
+			mytestMapper.deleteByPrimaryKey("ID"+i);
+			mytest = new Mytest();
+			mytest.setId("ID"+i);
+			mytest.setName("zhaopj"+i);
+			mytest.setAge(30);
+			mytest.setBirthday(new Date());
+			map.put("mytest"+i, mytest);
+			mytestMapper.insert(mytest);
+		}
 		return map;
 	}
 	
-	@RequestMapping("get")
+	@RequestMapping("del")
 	@ResponseBody
-	public Mytest ge() {
-		Mytest mytest = mytestMapper.selectByPrimaryKey("2");
-		return mytest;
+	public int del(HttpServletRequest request) {
+		String id = request.getParameter("id");
+		System.out.println(id);
+		int i = mytestMapper.deleteByPrimaryKey(id);
+		return i;
 	}
+	
 	
 }
